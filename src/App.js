@@ -1,11 +1,13 @@
 import { useEffect, useState, useRef } from "react";
 import { search } from "fast-fuzzy";
+import useLocalStorage from "./hooks/useLocalStorage";
 import "./App.css";
 
 function App() {
-  const [shoppingList, setShoppingList] = useState([]);
+  const [shoppingList, setShoppingList] = useLocalStorage("shoppingList", []);
   const [itemsToChooseFrom, setItemsToChooseFrom] = useState([]);
-  const [chosenItems, setChosenItems] = useState([]);
+  const [chosenItems, setChosenItems] = useLocalStorage("chosenItems", []);
+  const [language, setLanguage] = useState("de");
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -14,12 +16,11 @@ function App() {
         "https://fetch-me.vercel.app/api/shopping/items"
       );
       response = await response.json();
-      const onlyItemNames = response.data.map((e) => {
-        return e.name.de;
-      });
-      setShoppingList(onlyItemNames);
+      setShoppingList(response.data);
     }
-    fetchData();
+    if (shoppingList.length === 0) {
+      fetchData();
+    }
   }, []);
 
   useEffect(() => {
@@ -27,7 +28,9 @@ function App() {
   }, [shoppingList]);
 
   function searchFuzzily(value) {
-    setItemsToChooseFrom(search(value, shoppingList));
+    setItemsToChooseFrom(
+      search(value, shoppingList, { keySelector: (obj) => obj.name[language] })
+    );
   }
 
   function addItem(value) {
@@ -42,11 +45,21 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Shopping list with fuzzy search</h1>
+      <h1>
+        {language === "de"
+          ? "Einkaufsliste mit Fuzzy-Suche"
+          : "Shopping list with fuzzy search"}
+      </h1>
+      <button onClick={() => setLanguage("de")}>
+        {language === "de" ? "Deutsch" : "German"}
+      </button>
+      <button onClick={() => setLanguage("en")}>
+        {language === "de" ? "Englisch" : "English"}
+      </button>
       <ul>
         {chosenItems.map((e) => (
-          <li key={Math.random()}>
-            <button onClick={() => removeItem(e)}>{e}</button>
+          <li key={e._id}>
+            <button onClick={() => removeItem(e)}>{e.name[language]}</button>
           </li>
         ))}
       </ul>
@@ -56,8 +69,8 @@ function App() {
       />
       <ul>
         {itemsToChooseFrom.map((e) => (
-          <li key={Math.random()}>
-            <button onClick={() => addItem(e)}>{e}</button>
+          <li key={e._id}>
+            <button onClick={() => addItem(e)}>{e.name[language]}</button>
           </li>
         ))}
       </ul>
