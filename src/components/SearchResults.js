@@ -1,15 +1,17 @@
 import styled from "styled-components";
 
-export default function ShoppingList({ removeItem, chosenItems, language }) {
+export default function SearchResults({
+  addItem,
+  itemsToChooseFrom,
+  language,
+}) {
   return (
     <ItemList>
-      {chosenItems
-     
-        .map((e) => (
-          <Item key={e._id}>
-            <button onClick={() => removeItem(e)}>{e.name[language]}</button>
-          </Item>
-        ))}
+      {itemsToChooseFrom.map((e) => (
+        <Item key={e._id}>
+          <button onClick={() => addItem(e)}>{e.name[language]}</button>
+        </Item>
+      ))}
     </ItemList>
   );
 }

@@ -1,14 +1,21 @@
 import { useEffect, useState, useRef } from "react";
 import { search } from "fast-fuzzy";
 import useLocalStorage from "./hooks/useLocalStorage";
+import SearchResults from "./components/SearchResults";
+import ShoppingList from "./components/ShoppingItem";
+
+import RecentItems from "./components/RecentItems";
+
 import "./App.css";
 
 function App() {
   const [shoppingList, setShoppingList] = useLocalStorage("shoppingList", []);
   const [itemsToChooseFrom, setItemsToChooseFrom] = useState([]);
   const [chosenItems, setChosenItems] = useLocalStorage("chosenItems", []);
-  const [language, setLanguage] = useState("de");
+  const [recentItems, setRecentItems] = useLocalStorage("resentItems", []);
+  const [language, setLanguage] = useLocalStorage("language", "de");
   const inputRef = useRef(null);
+
 
   useEffect(() => {
     async function fetchData() {
@@ -40,7 +47,13 @@ function App() {
 
   function removeItem(value) {
     setChosenItems(chosenItems.filter((e) => e !== value));
-    setShoppingList([...shoppingList, value]);
+    //setShoppingList([...shoppingList, value]);
+    setRecentItems([value, ...recentItems]);
+  }
+
+  function removeRecent(value) {
+    setChosenItems([...chosenItems, value]);
+    setRecentItems(recentItems.filter((e) => e !== value));
   }
 
   return (
@@ -56,24 +69,26 @@ function App() {
       <button onClick={() => setLanguage("en")}>
         {language === "de" ? "Englisch" : "English"}
       </button>
-      <ul>
-        {chosenItems.map((e) => (
-          <li key={e._id}>
-            <button onClick={() => removeItem(e)}>{e.name[language]}</button>
-          </li>
-        ))}
-      </ul>
+      <ShoppingList
+        removeItem={removeItem}
+        chosenItems={chosenItems}
+        language={language}
+      />
       <input
         ref={inputRef}
         onChange={(event) => searchFuzzily(event.target.value)}
       />
-      <ul>
-        {itemsToChooseFrom.map((e) => (
-          <li key={e._id}>
-            <button onClick={() => addItem(e)}>{e.name[language]}</button>
-          </li>
-        ))}
-      </ul>
+      <RecentItems
+        removeRecent={removeRecent}
+        recentItems={recentItems}
+        language={language}
+      />
+
+      <SearchResults
+        addItem={addItem}
+        itemsToChooseFrom={itemsToChooseFrom}
+        language={language}
+      />
     </div>
   );
 }
