@@ -5,6 +5,7 @@ import SearchResults from "./components/SearchResults";
 import ShoppingList from "./components/ShoppingItems";
 import LanguageToggle from "./components/LanguageToggle";
 import Header from "./components/Header";
+import Input from "./components/Input";
 
 import RecentItems from "./components/RecentItems";
 
@@ -76,11 +77,7 @@ function App() {
   return (
     <div className="App">
       <Header>
-        <h1>
-          {language === "de"
-            ? "Einkaufsliste mit Fuzzy-Suche"
-            : "Shopping list with fuzzy search"}
-        </h1>
+        <h1>{language === "de" ? "Einkaufsliste" : "Shopping list"}</h1>
         <LanguageToggle language={language} setLanguage={setLanguage} />
       </Header>
       {categoryList.map((category) => (
@@ -95,11 +92,8 @@ function App() {
         />
       ))}
 
-      <input
-        ref={inputRef}
-        style={{ width: "50%", padding: "10px", textAlign: "center" }}
-        onChange={(event) => searchFuzzily(event.target.value)}
-      />
+      <Input inputRef={inputRef} searchFuzzily={searchFuzzily} />
+
       <RecentItems
         removeRecent={removeRecent}
         recentItems={recentItems}

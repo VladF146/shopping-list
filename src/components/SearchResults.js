@@ -21,6 +21,7 @@ const ItemList = styled.ul`
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+  width: 75%;
   gap: 5px;
 
   li {

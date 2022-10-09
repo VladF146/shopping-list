@@ -79,16 +79,21 @@ const Item = styled.li`
     padding: 10px;
     border-radius: 10px;
     border: none;
-    background-color: #6ee7b7;
+    background-color: #d1fae5;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
   }
 `;
 
 const CollapsibleHead = styled.div`
-  width: 100%;
+  width: 75%;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   padding: 10px;
   cursor: pointer;
+
+  span {
+    display: flex;
+    align-items: center;
+  }
 `;
