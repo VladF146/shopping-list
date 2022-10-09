@@ -94,11 +94,15 @@ function App() {
 
       <Input inputRef={inputRef} searchFuzzily={searchFuzzily} />
 
-      <RecentItems
-        removeRecent={removeRecent}
-        recentItems={recentItems}
-        language={language}
-      />
+      {!inputRef.current?.value ? (
+        <RecentItems
+          removeRecent={removeRecent}
+          recentItems={recentItems}
+          language={language}
+        />
+      ) : (
+        ""
+      )}
 
       {inputRef.current?.value && itemsToChooseFrom.length <= 0 ? (
         language === "de" ? (
