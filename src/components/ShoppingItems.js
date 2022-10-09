@@ -1,12 +1,18 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-export default function RecentItems({ removeRecent, recentItems, language }) {
+export default function ShoppingList({
+  removeItem,
+  chosenItems,
+  language,
+  category,
+}) {
   const [active, setActive] = useState(false);
   return (
     <>
       <CollapsibleHead onClick={() => setActive(!active)}>
-        <h2>{language === "de" ? "Jüngste Artikel" : "Recent items"}</h2>
+        <h2>{`${category.name[language]} (${chosenItems.length})`}</h2>
+
         <span>
           {active ? (
             <svg
@@ -41,14 +47,11 @@ export default function RecentItems({ removeRecent, recentItems, language }) {
       </CollapsibleHead>
       {active ? (
         <ItemList>
-          {recentItems.length > 0 &&
-            recentItems.map((e) => (
-              <Item key={e._id}>
-                <button onClick={() => removeRecent(e)}>
-                  {e.name[language]}
-                </button>
-              </Item>
-            ))}
+          {chosenItems.map((e) => (
+            <Item key={e._id}>
+              <button onClick={() => removeItem(e)}>{e.name[language]}</button>
+            </Item>
+          ))}
         </ItemList>
       ) : (
         ""
@@ -75,7 +78,7 @@ const Item = styled.li`
     height: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     padding: 10px;
     border-radius: 10px;
     border: none;

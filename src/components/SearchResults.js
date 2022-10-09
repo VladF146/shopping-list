@@ -38,7 +38,7 @@ const Item = styled.li`
     padding: 10px;
     border-radius: 10px;
     border: none;
-    background-color: pink;
+    background-color: #6ee7b7;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
   }
 `;
