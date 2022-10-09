@@ -16,7 +16,7 @@ function App() {
   const [categoryList, setCategoryList] = useLocalStorage("gategoryList", []);
   const [itemsToChooseFrom, setItemsToChooseFrom] = useState([]);
   const [chosenItems, setChosenItems] = useLocalStorage("chosenItems", []);
-  const [recentItems, setRecentItems] = useLocalStorage("resentItems", []);
+  const [recentItems, setRecentItems] = useLocalStorage("recentItems", []);
   const [language, setLanguage] = useLocalStorage("language", "de");
   const inputRef = useRef(null);
 
@@ -58,20 +58,20 @@ function App() {
 
   function addItem(value) {
     setChosenItems([...chosenItems, value]);
-    setShoppingList(shoppingList.filter((e) => e !== value));
-    setRecentItems(recentItems.filter((e) => e !== value));
+    setShoppingList(shoppingList.filter((e) => e._id !== value._id));
+    setRecentItems(recentItems.filter((e) => e._id !== value._id));
   }
 
   function removeItem(value) {
-    setChosenItems(chosenItems.filter((e) => e !== value));
+    setChosenItems(chosenItems.filter((e) => e._id !== value._id));
     setShoppingList([...shoppingList, value]);
     setRecentItems([value, ...recentItems]);
   }
 
   function removeRecent(value) {
     setChosenItems([...chosenItems, value]);
-    setShoppingList(shoppingList.filter((e) => e !== value));
-    setRecentItems(recentItems.filter((e) => e !== value));
+    setShoppingList(shoppingList.filter((e) => e._id !== value._id));
+    setRecentItems(recentItems.filter((e) => e._id !== value._id));
   }
 
   return (
