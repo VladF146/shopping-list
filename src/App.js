@@ -48,7 +48,7 @@ function App() {
 
   useEffect(() => {
     searchFuzzily(inputRef.current.value);
-  }, [shoppingList]);
+  }, [shoppingList, language]);
 
   function searchFuzzily(value) {
     setItemsToChooseFrom(
